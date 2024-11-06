@@ -1,89 +1,54 @@
-let idActual =1;
-let tareas = [];
+let idActual =JSON.parse(localStorage.getItem("ultimoId")) || 1;
+let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
-function generarId(){
-    return idActual++;
+function guardarEnStorage(){
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+    localStorage.setItem("ultimoId", JSON.stringify(idActual));
 }
+
 function agregarTarea() {
     const titulo = prompt ("Ingrese el titulo de la tarea que quiere ingresar: ");
     const descripcion = prompt("Describa la tarea ingresada: ");
     const nuevaTarea = {
-        id: generarId(),
+        id: idActual++,
         titulo: titulo,
         descripcion: descripcion,
         estado: "pendiente"
     };
     tareas.push(nuevaTarea);
-    alert("la tarea fue agregada");
+    guardarEnStorage();
+    mostrarTareas();
 }
-function listarTareas(){
-    if(tareas.length === 0){
-        console.log("no existen tareas");
-    }else{
-        console.log("lista de tareas actual:");
-        tareas.forEach(tarea =>{
-            console.log(`ID: ${tarea.id}, Título: ${tarea.titulo}, Descripción: ${tarea.descripcion}, Estado: ${tarea.estado}`);
-        });
-    }
+
+function mostrarTareas() {
+    const tareasDiv = document.getElementById("tareas");
+    tareasDiv.innerHTML = "";
+    tareas.forEach(tarea => {
+        const tareaElemento = document.createElement("div");
+        tareaElemento.classList.add("tarea");
+        tareaElemento.innerHTML = `
+            <p><strong>ID:</strong> ${tarea.id}</p>
+            <p><strong>Título:</strong> ${tarea.titulo}</p>
+            <p><strong>Descripción:</strong> ${tarea.descripcion}</p>
+            <p><strong>Estado:</strong> ${tarea.estado}</p>
+            <button onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+            <button onclick="actualizarEstado(${tarea.id})">Marcar completada</button>
+        `;
+        tareasDiv.appendChild(tareaElemento);
+    });
 }
-function actualizarEstadoTarea(){
-    const id = parseInt(prompt("Ingresa el ID de la tarea que quieres actualizar: "));
+function actualizarEstado(id){
     const tarea =tareas.find(t => t.id === id);
-    if (tarea){
-        const nuevoEstado =prompt("Ingrese el nuevo estado (pendiente, en proceso, completada)");
-        tarea.estado = nuevoEstado;
-        alert("estado actualizado");
-    }else {
-        alert("tarea no encontrada");
-    }
-}
-function eliminarTarea() {
-    const id =parseInt(prompt("ingresa el id de la tarea que quieres eliminar:"));
-    const indice = tareas.findIndex(t => t.id === id);
-    if (indice !== -1) {
-        tareas.splice(indice, 1);
-        alert("tarea eliminada");
-    } else {
-        alert("tarea no encontrada");
+    if (tarea) {
+        tarea.estado = "completada";
+        guardarEnStorage();
+        mostrarTareas();
     }
 }
 
-function buscarTarea() {
-    const termino =prompt("ingresa el termino de busqueda: ");
-    const resultados =tareas.filter(t => t.titulo.includes(termino) || t.descripcion.includes(termino));
-    if (resultados.length > 0) {
-        console.log("tareas encontradas:");
-        resultados.forEach(tarea =>{
-            console.log(`ID: ${tarea.id}, Título: ${tarea.titulo}, Descripción: ${tarea.descripcion}, Estado: ${tarea.estado}`);
-        });
-    } else {
-        console.log("no se encontraron tareas con el termino indicado");
-    }
+function eliminarTarea(id){
+    tareas =tareas.filter(t => t.id !== id);
+    guardarEnStorage();
+    mostrarTareas();
 }
-
-function menu() {
-    let opcion;
-    do{
-        opcion = parseInt(prompt("Seleccione una opción:\n1. Agregar tarea\n2. Listar tareas\n3. Actualizar estado de tarea\n4. Eliminar tarea\n5. Buscar tarea\n6. Salir"));
-        switch (opcion){
-            case 1:
-                agregarTarea();
-                break;
-            case 2:
-                listarTareas();
-                break;
-            case 3:
-                actualizarEstadoTarea();
-                break;
-            case 4:
-                eliminarTarea();
-                break;
-            case 5:
-                buscarTarea();
-                break;
-            case 6:
-                alert("saliendo");
-        }
-    }while(opcion !== 6);
-}
-menu();
+document.addEventListener("DOMContentLoaded", mostrarTareas);
