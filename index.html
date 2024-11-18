@@ -4,14 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
         <h1>administrador de tareas</h1>
     </header>
     <main>
+        <section id="formulario">
+            <h2>Agregar Tarea</h2>
+            <form id="formTarea">
+                <label for="titulo">Titulo: </label>
+                <input type="text" id="titulo" required>
+                <br>
+                <label for="descripcion">Descripcion: </label>
+                <input type="text" id="descripcion" required>
+                <br>
+                <button type="submit">Agregar Tarea</button>
+            </form>
+        </section>
         <section id="acciones">
-            <button onclick="agregarTarea()">Agregar Tarea</button>
+            <button id="ordenarTareas">ordenar tareas por estado</button>
         </section>
         <section id="tareas">
             <h2>Listado de tareas</h2>
@@ -19,6 +32,7 @@
         </section>
     </main>
     
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="index.js"></script>
 </body>
 </html>

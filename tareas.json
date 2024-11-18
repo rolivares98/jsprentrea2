@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "titulo": "Tarea inicial",
+        "descripcion": "esta es la descripcion de la tarea inicial",
+        "estado": "pendiente"
+    },
+    {
+        "id": 2,
+        "titulo": "tarea inicial 2",
+        "descripcion": "descripcion de la 2da tarea",
+        "estado": "completada"
+    }
+]
