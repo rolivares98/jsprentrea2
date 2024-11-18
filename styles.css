@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+header {
+    background: #007bff;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+main {
+    padding: 1rem;
+    
+}
+section {
+    margin: 1rem 0;
+}
+form label{
+    display: block;
+    font-weight: bold;
+    margin-right: 10px;
+}
+form input, buttom {
+    margin:  10px 0;
+    padding: 8px;
+}
+button {
+    padding: 12px 20px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background: #0056b3;
+}
+#tareas .tarea{
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+#tareas .tarea p {
+    margin: 5px 0;
+}
+#acciones button {
+    margin-top: 10px;
+}
