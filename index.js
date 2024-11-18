@@ -47,6 +47,16 @@ function agregarTarea(event) {
         
         return;
     }
+    // verificar si hay duplicados
+    const tareaDuplicada = tareas.some(tarea => tarea.titulo.toLowerCase() === titulo.toLowerCase()); 
+    if (tareaDuplicada) {
+        Swal.fire({
+            icon: "error",
+            title: "Tarea duplicada",
+            text: `Ya existe una tarea con el título "${titulo}". Por favor, elige otro título.`,
+        });
+        return;
+    }
 
     const nuevaTarea = {
         id: idActual++,
@@ -125,8 +135,42 @@ function ordenarTareas() {
     });
 }
 
+function cargarTareasDesdeJSON() {
+    fetch("tareas.json").then(response => {
+        if(!response.ok){
+            throw new Error("no se pudo cargar el archivo JSON");
+        }
+        return response.json();
+    })
+    .then(data => {
+        tareas = data;
+        idActual =tareas.length > 0? Math.max(...tareas.map(t => t.id)) +1 : 1;
+        guardarEnStorage();
+        mostrarTareas();
+
+        Swal.fire({
+            icon: "success",
+            title: "Tareas cargadas",
+            text: "Las tareas se han cargado correctamente desde el archivo JSON.",
+        });
+    })
+    .catch(error => {
+        console.error("Error al cargar el archivo JSON:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar las tareas desde el archivo JSON.",
+        });
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    mostrarTareas();
+    if (tareas.length === 0) {
+        // Si no hay tareas en localStorage se cargan desde el archivo JSON
+        cargarTareasDesdeJSON();
+    } else {
+        mostrarTareas();
+    }
 
     const botonOrdenar = document.getElementById("ordenarTareas");
     if (botonOrdenar) {
